@@ -7,7 +7,8 @@ import cv2
 import numpy as np
 import math
 import tkinter
-from tkinter import Tk, filedialog, Label, Frame, X, SUNKEN
+from tkinter import Tk, Toplevel,filedialog, Label, Frame, X, SUNKEN
+import tkinter as tk
 import os
 from scipy import interpolate 
 import matplotlib.pyplot as plt
@@ -473,4 +474,61 @@ def main():
         input("按回车键退出...")
 
 if __name__ == "__main__":
-    main() 
+        # 创建根窗口但不显示
+    root = tk.Tk()
+    root.withdraw()
+    
+    # 创建启动画面
+    splash = Toplevel(root)
+    splash.title("")
+    splash.overrideredirect(True)  # 移除标题栏
+    
+    # 获取屏幕尺寸
+    screen_width = splash.winfo_screenwidth()
+    screen_height = splash.winfo_screenheight()
+    
+    # 设置启动画面尺寸和位置
+    width = 500
+    height = 100
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
+    splash.geometry(f"{width}x{height}+{x}+{y}")
+    
+    # 设置整个窗口背景为黑色
+    splash.configure(bg='black')
+    
+    # 创建一个Frame来容纳标题和作者
+    title_frame = tk.Frame(splash, bg='black')
+    title_frame.pack(expand=True, fill="both")
+    
+    # 创建标题容器
+    title_container = tk.Frame(title_frame, bg='black')
+    title_container.pack(expand=True, fill="both")
+    
+    # 添加标题文本,居中显示
+    tk.Label(title_container, text="天线图转天线增益数据表工具", font=("黑体", 20, "bold"), 
+            bg='black', fg='white').pack(expand=True)
+    
+    # 创建作者容器
+    author_container = tk.Frame(title_frame, bg='black')
+    author_container.pack(fill="x", padx=5, pady=5)
+    
+    # 添加作者名字,右下角显示
+    tk.Label(author_container, text="HXDI 2024/11/22", font=("黑体", 10, "italic"),
+            bg='black', fg='white').pack(expand=True)
+    
+    # 更新显示
+    splash.update()
+    
+    # 延迟1秒后关闭启动画面并启动主程序
+    def start_main():
+        splash.destroy()
+        root.destroy()
+        main()
+        sys.exit()  # 确保程序完全退出
+        
+    splash.after(1000, start_main)
+    
+    # 启动主循环
+    splash.mainloop()
+     
